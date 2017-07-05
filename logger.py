@@ -1,41 +1,68 @@
-
+import logging
 from logging.handlers import TimedRotatingFileHandler
 
-FILE_NAME='aaa.log'
-FILE_MAX_SIZE=10*1024*1024
-TR_WHEN='S' # S, M, H, D, W
-TR_INTERVAL=10
-BACKUP_COUNT=5
 
-#handler = logging.StreamHandler()
-#handler = RotatingFileHandler(
-#    FILE_NAME,
-#    maxBytes=FILE_MAX_SIZE,
-#    backupCount=BACKUP_COUNT)
-handler = TimedRotatingFileHandler(
-    FILE_NAME,
-    when=TR_WHEN,
-    interval=TR_INTERVAL,
-    backupCount=BACKUP_COUNT)
-formatter = logging.Formatter('[%(levelname)s][%(asctime)s][%(name)s] %(message)s')
-handler.setFormatter(formatter)
+# default get StreamHandler, with debug level.
+# if log_file specified, then get a TimedRotatingFileHandler, when specified level.
+def get_logger(name, log_file=None, log_level=logging.INFO,
+               rotating_when='D', rotating_interval=7, backup_count=30):
+    logger = logging.getLogger(name)
 
-def get_logger():
-    logger = logging.getLogger(__file__)
-    logger.setLevel(logging.DEBUG)
+    if log_file:
+        logger.setLevel(log_level)
+        handler = TimedRotatingFileHandler(
+            log_file,
+            when=rotating_when,
+            interval=rotating_interval,
+            backupCount=backup_count)
+    else:
+        logger.setLevel(logging.DEBUG)
+        handler = logging.StreamHandler()
+
+    # logger.setLevel(log_level)
+    formatter = logging.Formatter('[%(levelname)s] [%(asctime)s] [%(name)s] %(message)s')
+    handler.setFormatter(formatter)
     logger.addHandler(handler)
+
     return logger
 
-if __name__ == '__main__':
-    import time
 
-    logger = get_logger()
-    while True:
-        logger.debug('debug')
-        logger.info('info')
-        logger.warn('warn')
-        logger.error('error')
-        logger.critical('critical')
-        logger.trace = logger.critical
-        logger.trace('trace')
-        time.sleep(1)
+if __name__ == '__main__':
+
+    def test_stream_handler():
+        LOG = get_logger(__file__)
+        LOG1 = get_logger(__file__)
+        LOG2 = get_logger('aa')
+        print LOG
+        print LOG1
+        print LOG2
+        LOG.debug('debug')
+        LOG.info('info')
+        LOG.warn('warn')
+        LOG.error('error')
+        LOG.critical('critical')
+
+    def test_timed_rotating_file_handler():
+        import os
+        import time
+
+        def mk_dir(path):
+            if not os.path.exists(path):
+                os.makedirs(path)
+
+        app_name = 'aaa'
+        log_path = os.path.join('/var/log/', app_name)
+        mk_dir(log_path)
+        log_file = os.path.join(log_path, app_name + '.log')
+        LOG = get_logger(__file__, log_file=log_file, rotating_when='S',
+                         rotating_interval=2, backup_count=3)
+        while True:
+            LOG.debug('debug')
+            LOG.info('info')
+            LOG.warn('warn')
+            LOG.error('error')
+            LOG.critical('critical')
+            time.sleep(1)
+
+    test_stream_handler()
+    #test_timed_rotating_file_handler()
