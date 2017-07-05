@@ -66,5 +66,17 @@ if __name__ == '__main__':
             LOG.critical('critical')
             time.sleep(1)
 
-    test_stream_handler()
+    def test_root_logger():
+        logging.basicConfig(
+            level=logging.DEBUG,
+            format='[%(levelname)s] [%(asctime)s] [%(name)s] %(message)s')
+        logging.debug('debug')
+        logging.info('info')
+        logging.warn('warn')
+        logging.error('error')
+        logging.critical('critical')
+        
+
+    #test_stream_handler()
     #test_timed_rotating_file_handler()
+    test_root_logger()
