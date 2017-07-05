@@ -2,12 +2,17 @@ import logging
 from logging.handlers import TimedRotatingFileHandler
 
 
-# default get StreamHandler, with debug level.
+# default log_file is None, will get a StreamHandler, with debug level.
 # if log_file specified, then get a TimedRotatingFileHandler, when specified level.
 def get_logger(name, log_file=None, log_level=logging.INFO,
                rotating_when='D', rotating_interval=7, backup_count=30):
     logger = logging.getLogger(name)
 
+    # if exist, get this already exist one
+    if logger.handlers:
+        return logger
+
+    # if not exist, then get a new one
     if log_file:
         logger.setLevel(log_level)
         handler = TimedRotatingFileHandler(
@@ -18,12 +23,9 @@ def get_logger(name, log_file=None, log_level=logging.INFO,
     else:
         logger.setLevel(logging.DEBUG)
         handler = logging.StreamHandler()
-
-    # logger.setLevel(log_level)
     formatter = logging.Formatter('[%(levelname)s] [%(asctime)s] [%(name)s] %(message)s')
     handler.setFormatter(formatter)
     logger.addHandler(handler)
-
     return logger
 
 
