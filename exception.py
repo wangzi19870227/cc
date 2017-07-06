@@ -1,18 +1,30 @@
 import traceback
 
 
-class MyException(Exception):
-    pass
+class BaseModelException(Exception):
+    def __str__(self):
+        return self.message
 
 
-class MyException2(Exception):
-    pass
+class TimeFormatError(BaseModelException):
+    def __init__(self, time):
+        self.time = time
+        self.message = 'time (%s) format error! ISO8601 format required.' % time
+
+
+class ResourceAlreadyExistError(BaseModelException):
+    def __init__(self, resource_id):
+        self.resource_id = resource_id
+        self.message = 'resource id (%s) already exist.' % resource_id
+
 
 def aaa():
-    raise MyException('xxx')
+    raise TimeFormatError('xxx')
+
 
 def bbb():
-    raise MyException('yyy')
+    raise ResourceAlreadyExistError('xxx')
+
 
 def re_raise():
     e = None
