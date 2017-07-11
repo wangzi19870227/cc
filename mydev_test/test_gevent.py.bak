@@ -1,0 +1,41 @@
+#from gevent import monkey
+#monkey.patch_socket()
+import gevent
+import datetime
+
+
+def hello(interval):
+    while True:
+        now = datetime.datetime.utcnow()
+        print("hello, gevent: %s, time: %s" % 
+              (gevent.getcurrent(), now))
+
+        gevent.sleep(interval)
+
+def send_metering(interval):
+    while True:
+        now = datetime.datetime.utcnow()
+        print("send_metering, gevent: %s, time: %s" % 
+              (gevent.getcurrent(), now))
+
+        gevent.sleep(interval)
+
+def handle_metering_error(interval):
+    while True:
+        now = datetime.datetime.utcnow()
+        print("handle_metering_error, gevent: %s, time: %s" % 
+              (gevent.getcurrent(), now))
+
+        gevent.sleep(interval)
+
+def run():
+    while True:
+        g1 = gevent.spawn(hello, 1)
+        g2 = gevent.spawn(send_metering, 10)
+        g3 = gevent.spawn(handle_metering_error, 5)
+        
+        g1.join()
+        g2.join()
+        g3.join()
+
+run()
