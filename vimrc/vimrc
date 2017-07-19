@@ -1,0 +1,94 @@
+set nocompatible "设置默认模式为普通vim模式
+winpos 0 0 " 设定窗口位置    
+"set lines=54 columns=201 " 设定窗口大小 
+"
+set nu              " 显示行号
+"color asmanian2     " 设置背景主题 
+set background="dark" "设置背景颜色为暗色（或light亮色）
+syntax on           " 语法高亮   
+"autocmd InsertLeave * se nocul  " 用浅色高亮当前行    
+"autocmd InsertEnter * se cul    " 用浅色高亮当前行
+set ruler           " 在Vim窗口的右下角显示当前光标的行列信息
+set showcmd         " 在Vim窗口的右下角显示命令已经完成的部分
+set laststatus=2    " 启动显示状态行(1),总是显示状态行(2)
+set hlsearch " 高亮显示搜索结果
+set incsearch " 在键入目标字符串的过程中就同时开始搜索
+set history=1000 "设置冒号命令和搜索命令的命令历史列表的长度
+"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%l,%v][%p%%]\ %{strftime(\"%d/%m/%y\ -\ %H:%M\")}   "状态行显示的内容
+
+set textwidth=78 "限制每一行能有多少个字符
+set wrap "自动折行
+
+set showmatch "括号匹配
+
+"set foldenable      " 允许折叠    
+"set foldmethod=manual   " 手动折叠
+
+set wildmenu " 在命令模式下使用 Tab 自动补全的时候，将补全内容使用一个漂亮的单行菜单形式显示出来
+
+" 设置缩进
+"set cindent " 针对 C语言语法自动缩进
+"set autoindent 自动缩进
+set smartindent "更智能的自动缩进
+set tabstop=4 " tap宽度
+set softtabstop=4 " softtap宽度
+set shiftwidth=4 " 缩进宽度
+set expandtab " tap替换为空格,按下一个 Tab 键就能插入 4 个空格
+set smarttab " 可以只按一下 Backspace 就删除 4 个空格了
+
+" 设置编码
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936  
+set termencoding=utf-8  
+set encoding=utf-8  
+set fileencodings=utf-8,ucs-bom,cp936  
+set fileencoding=utf-8
+
+" 映射全选+复制 ctrl+a 
+map <C-A> ggVGY 
+
+" Fix screen issue
+let g:NERDTreeDirArrows=0
+
+" keyboard shortcuts
+let mapleader = ','
+nmap <leader>d :NERDTreeToggle<CR>
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+"map <S-Up> :resize -5<CR>
+"map <S-Down> :resize +5<CR>
+"map <S-Left> :vertical resize -5<CR>
+"map <S-Right> :vertical resize +5<CR>
+
+"set keymodel=startsel,stopsel "使用“Shift + 方向键”选择文本
+
+""新建标签   
+"map <M-F2> :tabnew<CR>   
+""列出当前目录文件   
+"map <F3> :tabnew .<CR>   
+""打开树状文件目录   
+"map <C-M> \be   
+
+""C，C++ 按F5编译运行 
+"map <C-F5> :call CompileRunGcc()<CR> 
+"func! CompileRunGcc() 
+"    exec "w" 
+"    if &filetype == 'python' 
+"        exec "!python ./%<" 
+"    elseif &filetype == 'sh' 
+"        :!sh ./% 
+"    endif 
+"endfunc 
+
+filetype on "自动识别文件类型
+filetype indent on "为特定文件类型载入相关缩进文件 
+
+
+"代码补全   
+filetype plugin indent on
+set completeopt=preview,menu   
+
+"允许插件    
+filetype plugin on
+let g:pydiction_location = '~/.vim/tools/pydiction/complete-dict'
