@@ -77,6 +77,6 @@ if __name__ == '__main__':
         logging.critical('critical')
         
 
-    #test_stream_handler()
+    test_stream_handler()
     #test_timed_rotating_file_handler()
-    test_root_logger()
+    #test_root_logger()

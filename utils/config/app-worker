@@ -14,8 +14,8 @@ lockfile=/var/lock/subsys/$prog
 start() {
         # Start daemons.
         echo "Starting $prog: "
-        # sed '/^ *$/d' /etc/app/app-worker.conf | sed 's/^/export &/g' > .tmp
-        sed '/^ *$/d' app-worker.conf | sed 's/^/export &/g' > .tmp
+        # sed '/^ *$/d' /etc/app/app.conf | sed 's/^/export &/g' > .tmp
+        sed '/^ *$/d' app.conf | sed 's/^/export &/g' > .tmp
         source .tmp; rm -f .tmp
         # app-worker &
         python config.py&
