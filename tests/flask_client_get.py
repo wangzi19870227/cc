@@ -7,7 +7,7 @@ from urllib import urlencode
 # we can only use request.args(request.query_string) to get params.
 # request.args can get a ImmutableMultiDict object, 
 # request.query_string can get a urlencoded string.
-url = 'http://127.0.0.1:5000/send_sms'
+url = 'http://127.0.0.1:50000/send_sms'
 payload = {
     "tos": '13641167229, 13641167229',
     "content": "aaa",
@@ -20,7 +20,7 @@ print r.text
 # we can only use request.args(request.query_string) to get params
 # request.args can get a ImmutableMultiDict object, 
 # request.query_string can get a urlencoded string.
-url = 'http://127.0.0.1:5000/send_sms'
+url = 'http://127.0.0.1:50000/send_sms'
 payload = {
     "tos": '13641167229, 13641167229',
     "content": "aaa",

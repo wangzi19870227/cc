@@ -1,3 +1,5 @@
+#https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/001386832704232d6fb5df42dd34a7890fa6254351faac7000
+
 import urlparse
 from flask import Flask, request, redirect, url_for
 from jsonschema import validate
@@ -17,8 +19,8 @@ def validate_request(schema):
 
         # for url encode
         if params is None:
-            params = request.get_data()
-            params = urlparse.parse_qs(params, keep_blank_values=True)
+            qs = request.get_data()
+            params = urlparse.parse_qs(qs, keep_blank_values=True)
             for key in params.keys():
                 params[key] = params[key][0]
     else:
@@ -32,19 +34,20 @@ def validate_request(schema):
 
 def debug_request():
     #print "dir(request): %s" % dir(request)
-    print "url: %s" % request.url
-    print "method: %s" % request.method 
-    print "data: %s" % request.data
-    print "endpoint: %s" % request.endpoint
+    #print "endpoint: %s" % request.endpoint
     #print "environ: %s" % request.environ
     #print "headers: %s" % request.headers
-    print "values: %s" % request.values
-    print "is_json: %s" % request.is_json
-    # usage: used to fetch get() method params
+    #print "values: %s" % request.values
+    print "request.url: %s" % request.url
+    print "request.method: %s" % request.method 
+    # fetch GET params string
     print "request.args: %s, type: %s" % (request.args, type(request.args)) 
-    # usage: used to fetch get() method params
     print "request.query_string: %s, type: %s" % (request.query_string, type(request.query_string))
-    # usage: used to fetch post() method params, return a Dict object
+    ## fetch POST data, return a json/url encode string
+    #print "request.data: %s, type: %s" % (request.data, type(request.data))
+    # fetch POST data, return a json/url encode string
+    print "request.get_data(): %s, type: %s" % (request.get_data(), type(request.get_data()))
+    # fetch POST data with json encode, return a dict object
     get_json_true_true = request.get_json(force=True, silent=True)
     get_json_true_false = request.get_json(force=True, silent=False)
     get_json_false_true = request.get_json(force=False, silent=True)
@@ -54,8 +57,6 @@ def debug_request():
     print "request.get_json(force=True, silent=False): %s, type: %s" % (get_json_true_false, type(get_json_true_false))
     print "request.get_json(force=False, silent=True): %s, type: %s" % (get_json_false_true, type(get_json_false_true))
     print "request.get_json(force=False, silent=False): %s, type: %s" % (get_json_false_false, type(get_json_false_false))
-    # usage: used to fetch post() method params, return a json/url encoded string
-    print "request.get_data(): %s, type: %s" % (request.get_data(), type(request.get_data()))
 
 
 @app.route('/index')
@@ -74,11 +75,6 @@ def get_user_info(username):
     print 'get_user_info() ok.'
     return 'username'
 
-
-@app.route('/test_post', methods=['POST'])
-def test_post():
-    debug_request()
-    return 'test_post ok'
 
 @app.route('/send_sms', methods=['GET', 'POST'])
 def send_sms():
@@ -131,4 +127,4 @@ def create_project():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=50000, debug=True)
